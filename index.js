@@ -27,7 +27,16 @@ async function run() {
 
     // fetching all products
     app.get("/products", async (req, res) => {
-      const products = await productCollection.find().toArray();
+      // pagination functionality
+      const query = req.query;
+      const page = parseInt(query.page);
+      const size = parseInt(query.size);
+      // filtering functionality
+      const products = await productCollection
+        .find()
+        .skip(page * size)
+        .limit(size)
+        .toArray();
       res.status(200).send(products);
     });
   } catch (error) {
