@@ -34,12 +34,26 @@ async function run() {
       const page = parseInt(query.page);
       const size = parseInt(query.size);
       const filteringTerms = JSON.parse(query.terms);
-      console.log(filteringTerms);
+      const dateSort = query.dateSort;
+      const priceSort = query.priceSort;
+
       // filtering functionality
       const filter = buildQuery({ ...filteringTerms });
-      // console.log(filter);
+
+      // sorting on price, createdAt
+      let sort = {};
+
+      if (priceSort !== "") {
+        sort.price = parseInt(priceSort);
+      } else if (dateSort !== "") {
+        sort.createdAt = parseInt(dateSort);
+      } else {
+        sort = {};
+      }
+
       const products = await productCollection
         .find(filter)
+        .sort(sort)
         .skip(page * size)
         .limit(size)
         .toArray();
@@ -53,7 +67,7 @@ async function run() {
       const filteringTerms = JSON.parse(query.terms);
       const filter = buildQuery({ ...filteringTerms });
       const count = await productCollection.countDocuments(filter);
-      // console.log(count);
+
       res.send({ count });
     });
   } catch (error) {

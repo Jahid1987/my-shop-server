@@ -4,7 +4,7 @@ function buildQuery({ name, brands, categories, priceMin, priceMax }) {
 
   // Product name search (case-insensitive)
   if (name !== "") {
-    query.name = { $regex: name, $options: "i" }; // 'i' for case-insensitive search
+    query.name = { $regex: name, $options: "i" };
   }
 
   // Brand name filter
