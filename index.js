@@ -6,7 +6,15 @@ const app = express();
 const port = process.env.PORT || 5000;
 
 // built in middleware
-app.use(cors());
+app.use(
+  cors({
+    origin: [
+      "http://localhost:5173",
+      "https://my-shop-59336.web.app",
+      "https://my-shop-59336.firebaseapp.com",
+    ],
+  })
+);
 app.use(express.json());
 
 const { MongoClient, ServerApiVersion } = require("mongodb");
