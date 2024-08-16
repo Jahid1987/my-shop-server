@@ -3,7 +3,7 @@ function buildQuery({ name, brands, categories, priceMin, priceMax }) {
   const query = {};
 
   // Product name search (case-insensitive)
-  if (name && name !== "") {
+  if (name !== "") {
     query.name = { $regex: name, $options: "i" }; // 'i' for case-insensitive search
   }
 
@@ -18,12 +18,12 @@ function buildQuery({ name, brands, categories, priceMin, priceMax }) {
   }
 
   // Price range filter
-  if (priceMin !== undefined && priceMax !== undefined) {
-    query.price = { $gte: priceMin, $lte: priceMax };
-  } else if (priceMin !== undefined) {
-    query.price = { $gte: priceMin };
-  } else if (priceMax !== undefined) {
-    query.price = { $lte: priceMax };
+  if (priceMin !== "" && priceMax !== "") {
+    query.price = { $gte: parseInt(priceMin), $lte: parseInt(priceMax) };
+  } else if (priceMin !== "") {
+    query.price = { $gte: parseInt(priceMin) };
+  } else if (priceMax !== "") {
+    query.price = { $lte: parseInt(priceMax) };
   }
 
   return query;

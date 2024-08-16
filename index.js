@@ -33,12 +33,10 @@ async function run() {
       const query = req.query;
       const page = parseInt(query.page);
       const size = parseInt(query.size);
+      const filteringTerms = JSON.parse(query.terms);
+      console.log(filteringTerms);
       // filtering functionality
-      const filter = buildQuery({
-        // name: "Classic",
-        brands: ["StyleCraft"],
-        // categories: ["Clothes", "ActiveWear"],
-      });
+      const filter = buildQuery({ ...filteringTerms });
       // console.log(filter);
       const products = await productCollection
         .find(filter)
@@ -49,16 +47,13 @@ async function run() {
     });
 
     // fetching amount of products
-    // reading the amount of product
     app.get("/productcount", async (req, res) => {
       // filtering functionality
-      const filter = buildQuery({
-        // name: "Classic",
-        brands: ["StyleCraft"],
-        // categories: ["Clothes", "ActiveWear"],
-      });
+      const query = req.query;
+      const filteringTerms = JSON.parse(query.terms);
+      const filter = buildQuery({ ...filteringTerms });
       const count = await productCollection.countDocuments(filter);
-      console.log(count);
+      // console.log(count);
       res.send({ count });
     });
   } catch (error) {
